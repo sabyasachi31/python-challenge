@@ -10,25 +10,25 @@ candidates=[]
 
 with open(csv_path,'r') as csvfile:
     csvreader=csv.reader(csvfile,delimiter=',')
+    csvheader=next(csvreader)
     for row in csvreader:
-        if ind!=0:
-            cnt=0
-            for name in candidates:
-                if name!=row[2]:
-                    cnt=cnt+1
-            if cnt==len(candidates):
-                candidates.append(row[2])
-        ind=ind+1
-              
-ind=0
+        
+        cnt=0
+        for name in candidates:
+            if name!=row[2]:
+                cnt=cnt+1
+        if cnt==len(candidates):
+            candidates.append(row[2])
+
 votes=[0]*len(candidates)
 with open(csv_path,'r') as csvfile:
     csvreader=csv.reader(csvfile,delimiter=',')
+    csvheader=next(csvreader)
     for row in csvreader:
-        if ind!=0:
-            pos=candidates.index(row[2])
-            votes[pos]=votes[pos]+1
-        ind=ind+1
+        
+        pos=candidates.index(row[2])
+        votes[pos]=votes[pos]+1
+
 
 total=sum(votes)
 max_votes=max(votes)
