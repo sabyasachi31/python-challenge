@@ -1,51 +1,71 @@
+#Dependencies
 import os
 import csv
+import sys
 
+#Filepath
 csv_path=os.path.join('Resources','election_data.csv')
 
-ind=0
-total=0
-candidates=[]
-
+#Declaring empty dictionary
+candidates={}
 
 with open(csv_path,'r') as csvfile:
     csvreader=csv.reader(csvfile,delimiter=',')
+    #Skipping over the header row
     csvheader=next(csvreader)
+    
     for row in csvreader:
-        
-        cnt=0
-        for name in candidates:
-            if name!=row[2]:
-                cnt=cnt+1
-        if cnt==len(candidates):
-            candidates.append(row[2])
+        #Assigning the names of candidates as unique dictionary keys 
+        #and the number of votes as their values     
 
-votes=[0]*len(candidates)
-with open(csv_path,'r') as csvfile:
-    csvreader=csv.reader(csvfile,delimiter=',')
-    csvheader=next(csvreader)
-    for row in csvreader:
-        
-        pos=candidates.index(row[2])
-        votes[pos]=votes[pos]+1
+        if row[2] in candidates:
+            candidates[row[2]]+=1
+        else:
+            candidates[row[2]]=1
 
+#Finding total votes cast
+total=sum(candidates.values())
+#Finding maximum votes cast for the winning candidate
+max_votes=max(candidates.values())
 
-total=sum(votes)
-max_votes=max(votes)
-w_ind=votes.index(max_votes)
-winner=candidates[w_ind]
+# Output to Terminal
+print("Election Results")
+print("--------------------------")
+print(f"Total Votes: {total}")
 
+print("--------------------------")
+
+for name, votes in candidates.items():
+    #Finding the winner with maximum votes
+    if votes==max_votes:
+        winner=name
+    print(f"{name}: {round(100*votes/total,3)}% ({votes})")
+
+print("--------------------------")
+print(f"Winner: {winner} ")
+
+print("--------------------------")
+
+#Export to File
+file=open("analysis/poll.txt",'w')
+sys.stdout=file
 
 print("Election Results")
 print("--------------------------")
 print(f"Total Votes: {total}")
 
 print("--------------------------")
-for i in range(len(candidates)):
-    print(f"{candidates[i]}: {round(100*votes[i]/total,3)}% ({votes[i]})")
 
+for name, votes in candidates.items():
+            
+    if votes==max_votes:
+        winner=name
+    print(f"{name}: {round(100*votes/total,3)}% ({votes})")
 
 print("--------------------------")
 print(f"Winner: {winner} ")
 
 print("--------------------------")
+
+file.close()
+
