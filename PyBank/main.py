@@ -55,7 +55,7 @@ avg_change=round(mean(pl_change),2)
 #Print to Terminal
 
 print("Financial Analysis")
-print("--------------------------")
+print("---------------------------")
    
 print(f"Total Months: {total_months}")
 print(f"Total: ${total}")
